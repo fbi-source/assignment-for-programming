@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int miles = 0;
+    float kilometers;
+
+    // Print the heading line
+    printf("Miles to Kilometers Conversion Table\n");
+    printf("------------------------------------\n");
+    printf("  Miles     Kilometers\n");
+
+    while (miles <= 200)
+    {
+        // Convert miles to kilometers
+        kilometers = miles * 1.60934;
+
+        // Print the result in a formatted table
+        printf("%6d %12.2f\n", miles, kilometers);
+
+        // Increment miles by 10
+        miles = miles + 20;
+    }
+
+    return 0;
+}
