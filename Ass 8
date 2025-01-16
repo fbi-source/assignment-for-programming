@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+// Defining a structure named 'rec'
+struct rec {
+    int a, b, c;
+    float d, e, f;
+};
+
+// Using typedef to define a new type 'rec_type'
+typedef struct rec rec_type;
+
+int main() {
+    // Declaring a variable of type 'rec_type'
+    rec_type r;
+
+    // Accessing and assigning values to structure fields
+    r.a = 5;
+    r.b = 10;
+    r.c = 15;
+    r.d = 20.5;
+    r.e = 25.5;
+    r.f = 30.5;
+
+    // Printing the values of the structure fields
+    printf("Values of r:\n");
+    printf("a = %d, b = %d, c = %d\n", r.a, r.b, r.c);
+    printf("d = %.2f, e = %.2f, f = %.2f\n", r.d, r.e, r.f);
+
+    return 0;
+}
