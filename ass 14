@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+// Function to remove leading and trailing spaces
+void trim(char* str) {
+    char* end;
+
+    // Trim leading spaces
+    while (isspace((unsigned char)*str)) {
+        str++;
+    }
+
+    // Trim trailing spaces
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end)) {
+        end--;
+    }
+    
+    // Null-terminate the trimmed string
+    *(end + 1) = '\0';
+}
+
+// Function to get the last name (assuming first name and last name are separated by a space)
+char* getLastName(char* fullName) {
+    char* lastName = strrchr(fullName, ' ');
+    if (lastName != NULL) {
+        return lastName + 1; // Skip the space character
+    }
+    return NULL; // No space found, last name not present
+}
+
+// Function to convert a string to uppercase
+void toUpperCase(char* str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = toupper((unsigned char)str[i]);
+    }
+}
+
+// Function to get the first word from a string
+void getFirstWord(char* str, char* firstWord) {
+    int i = 0;
+    // Extract the first word
+    while (str[i] != '\0' && str[i] != ' ') {
+        firstWord[i] = str[i];
+        i++;
+    }
+    firstWord[i] = '\0'; // Null-terminate the first word
+
+    // Move the pointer to the remainder of the string
+    if (str[i] == ' ') {
+        memmove(str, str + i + 1, strlen(str + i)); // Shift the remaining part of the string
+    } else {
+        str[0] = '\0'; // No space found, empty remainder
+    }
+}
+
+int main(void) {
+    char fullName[100], firstWord[50], lastName[50];
+
+    // Get the full name input
+    printf("Enter a full name (first name followed by last name): ");
+    fgets(fullName, 100, stdin);
+    fullName[strcspn(fullName, "\n")] = '\0'; // Remove newline character from input
+
+    // Trim the full name to remove leading and trailing spaces
+    trim(fullName);
+    printf("Trimmed name: '%s'\n", fullName);
+
+    // Get the last name
+    char* last = getLastName(fullName);
+    if (last != NULL) {
+        printf("Last Name: '%s'\n", last);
+    } else {
+        printf("No last name found.\n");
+    }
+
+    // Convert the full name to uppercase
+    toUpperCase(fullName);
+    printf("Uppercase name: '%s'\n", fullName);
+
+    // Get the first word from the name
+    strcpy(firstWord, fullName); // Copy the full name to extract first word
+    getFirstWord(fullName, firstWord);
+    printf("First Word: '%s'\n", firstWord);
+    printf("Remaining name: '%s'\n", fullName);
+
+    return 0;
+}
