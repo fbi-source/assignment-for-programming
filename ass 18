@@ -1,0 +1,95 @@
+#include <stdio.h>
+
+struct rec {
+    int x, y, z;
+};
+
+int main(void) {
+    FILE *f;
+    struct rec r;
+    int i;
+
+    // Create the file of 10 records
+    f = fopen("junk", "w");
+    if (!f) {
+        printf("Failed to create file.\n");
+        return 1;
+    }
+    for (i = 1; i <= 10; i++) {
+        r.x = i;
+        r.y = i * 2;
+        r.z = i * 3;
+        fwrite(&r, sizeof(struct rec), 1, f);  // Write the structure to file
+    }
+    fclose(f);
+
+    // Read the 10 records
+    f = fopen("junk", "r");
+    if (!f) {
+        printf("Failed to open file for reading.\n");
+        return 1;
+    }
+    printf("Reading all records:\n");
+    for (i = 1; i <= 10; i++) {
+        fread(&r, sizeof(struct rec), 1, f);  // Read the structure from file
+        printf("Record %d: x=%d, y=%d, z=%d\n", i, r.x, r.y, r.z);
+    }
+    fclose(f);
+
+    // Use fseek to read the 10 records in reverse order
+    f = fopen("junk", "r");
+    if (!f) {
+        printf("Failed to open file for reverse reading.\n");
+        return 1;
+    }
+    printf("\nReading in reverse order:\n");
+    for (i = 9; i >= 0; i--) {
+        fseek(f, sizeof(struct rec) * i, SEEK_SET);  // Seek to the ith record
+        fread(&r, sizeof(struct rec), 1, f);
+        printf("Record %d: x=%d, y=%d, z=%d\n", i+1, r.x, r.y, r.z);
+    }
+    fclose(f);
+
+    // Use fseek to read every other record
+    f = fopen("junk", "r");
+    if (!f) {
+        printf("Failed to open file for every other reading.\n");
+        return 1;
+    }
+    printf("\nReading every other record:\n");
+    fseek(f, 0, SEEK_SET);
+    for (i = 0; i < 5; i++) {
+        fread(&r, sizeof(struct rec), 1, f);
+        printf("Record %d: x=%d, y=%d, z=%d\n", i*2+1, r.x, r.y, r.z);
+        fseek(f, sizeof(struct rec), SEEK_CUR);  // Skip one record
+    }
+    fclose(f);
+
+    // Change the 4th record and write it back
+    f = fopen("junk", "r+");
+    if (!f) {
+        printf("Failed to open file for reading and writing.\n");
+        return 1;
+    }
+    fseek(f, sizeof(struct rec) * 3, SEEK_SET);  // Seek to the 4th record
+    fread(&r, sizeof(struct rec), 1, f);  // Read the record
+    r.x = 100;  // Change the value of x
+    fseek(f, sizeof(struct rec) * 3, SEEK_SET);  // Seek back to the 4th record
+    fwrite(&r, sizeof(struct rec), 1, f);  // Write the modified record back
+    fclose(f);
+
+    // Read the 10 records again to ensure the 4th record was changed
+    f = fopen("junk", "r");
+    if (!f) {
+        printf("Failed to open file after modification.\n");
+        return 1;
+    }
+    printf("\nReading all records after modification:\n");
+    for (i = 1; i <= 10; i++) {
+        fread(&r, sizeof(struct rec), 1, f);
+        printf("Record %d: x=%d, y=%d, z=%d\n", i, r.x, r.y, r.z);
+    }
+    fclose(f);
+
+    return 0;
+}
