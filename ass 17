@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 1000
+
+int main(int argc, char *argv[]) {
+    FILE *file;
+    char s[MAX];
+    int count = 0;
+
+    // Check if the user passed a filename as an argument
+    if (argc > 1) {
+        // Try to open the file passed as a command-line argument
+        file = fopen(argv[1], "r");
+        if (!file) {
+            printf("Failed to open file: %s\n", argv[1]);
+            return 1;  // Return error if file cannot be opened
+        }
+
+        // Read the file and count characters
+        while (fgets(s, MAX, file) != NULL) {
+            count += strlen(s);
+        }
+        fclose(file);  // Close the file after reading
+    } else {
+        // If no file passed, read from stdin (keyboard input)
+        printf("Enter text (CTRL+D to end input):\n");
+        while (gets(s)) {
+            count += strlen(s);
+        }
+    }
+
+    // Print the total character count
+    printf("Character count: %d\n", count);
+
+    // Optionally, write the count to a file
+    file = fopen("output.txt", "w");
+    if (file) {
+        fprintf(file, "Total character count: %d\n", count);
+        fclose(file);
+        printf("Character count written to output.txt\n");
+    } else {
+        printf("Failed to open output.txt for writing.\n");
+    }
+
+    return 0;
+}
