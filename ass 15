@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+int main(void) {
+    // Demonstrating Operator Precedence
+    int x, y, z;
+    x = 5 + 3 * 6; // Multiplication has higher precedence than addition
+    printf("x = 5 + 3 * 6 results in: %d\n", x); // Expected output: 23
+    
+    y = (5 + 3) * 6; // Parentheses alter the precedence
+    printf("y = (5 + 3) * 6 results in: %d\n", y); // Expected output: 48
+
+    // Example showing precedence with array of pointers
+    char *a[10]; // Array of 10 pointers to char
+    a[0] = "Hello";
+    printf("a[0] = %s\n", a[0]); // Expected output: Hello
+
+    // Example of pointer dereferencing with correct precedence
+    struct Point {
+        int x;
+        int y;
+    };
+    struct Point p = {10, 20};
+    struct Point *ptr = &p;
+    // The correct form for accessing struct members using pointers is (*ptr).x
+    printf("Using (*ptr).x: %d\n", (*ptr).x); // Expected output: 10
+    
+    // Mixing operators: showing precedence of arithmetic and relational operators
+    z = 10 + 20 / 2 - 5 * 3;
+    printf("z = 10 + 20 / 2 - 5 * 3 results in: %d\n", z); // Expected output: -5
+
+    // Correcting operator precedence issues using parentheses
+    z = (10 + 20) / (2 - 5) * 3;
+    printf("z = (10 + 20) / (2 - 5) * 3 results in: %d\n", z); // Expected output: -30
+
+    return 0;
+}
