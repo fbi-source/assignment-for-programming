@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure definition
+struct record {
+    int i;
+    float f;
+    char c;
+};
+
+int main(void) {
+    // Dynamic allocation for a single integer
+    int *p;
+    p = (int *)malloc(sizeof(int));
+    
+    // Check if malloc succeeded
+    if (p == NULL) {
+        printf("ERROR: Out of memory\n");
+        return 1;
+    }
+    
+    *p = 10;  // Assigning value to the allocated memory
+    printf("Integer value: %d\n", *p);
+    
+    // Deallocating memory
+    free(p);
+
+    // Dynamic allocation for a structure
+    struct record *r;
+    r = (struct record *)malloc(sizeof(struct record));
+    
+    // Check if malloc succeeded
+    if (r == NULL) {
+        printf("ERROR: Out of memory\n");
+        return 1;
+    }
+    
+    // Assigning values to the structure's members
+    r->i = 10;
+    r->f = 3.14;
+    r->c = 'a';
+    
+    // Printing the values
+    printf("Structure values: %d, %.2f, %c\n", r->i, r->f, r->c);
+    
+    // Deallocating memory
+    free(r);
+    
+    // Dynamic allocation for two pointers pointing to the same block
+    int *q;
+    q = (int *)malloc(sizeof(int));
+
+    // Check if malloc succeeded
+    if (q == NULL) {
+        printf("ERROR: Out of memory\n");
+        return 1;
+    }
+
+    *q = 20;
+    printf("Value pointed by q: %d\n", *q);
+
+    // Pointer p pointing to the same block as q
+    p = q;
+    printf("Value pointed by p (after assignment): %d\n", *p);
+
+    // Deallocating memory
+    free(q);  // Only one free, since both p and q point to the same block
+
+    return 0;
+}
