@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+// Function to swap two integers using pointers
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main(void) {
+    int i = 10, j = 20;
+    int *p, *q;
+
+    // Demonstrating basic pointer operations
+    p = &i;  // p points to i
+    q = &j;  // q points to j
+
+    // Print initial values and memory addresses
+    printf("Before swap:\n");
+    printf("i = %d, j = %d\n", i, j);
+    printf("Address of i: %p, Address of j: %p\n", (void*)&i, (void*)&j);
+    printf("Pointer p points to value: %d\n", *p);
+    printf("Pointer q points to value: %d\n", *q);
+
+    // Using the swap function with pointers
+    swap(p, q);
+
+    // Print values and memory addresses after swap
+    printf("\nAfter swap:\n");
+    printf("i = %d, j = %d\n", i, j);
+    printf("Pointer p now points to value: %d\n", *p);
+    printf("Pointer q now points to value: %d\n", *q);
+
+    // Demonstrating the effect of multiple pointers pointing to the same address
+    int r = 30;
+    p = &r;
+    q = p; // q now also points to r
+
+    printf("\nDemonstrating multiple pointers pointing to the same address:\n");
+    printf("r = %d, Value pointed by p: %d, Value pointed by q: %d\n", r, *p, *q);
+
+    // Pointer to an uninitialized value (unsafe practice)
+    int *uninitializedPointer;
+    // Uncommenting the following line could result in undefined behavior
+    // *uninitializedPointer = 5;
+
+    return 0;
+}
